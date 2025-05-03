@@ -9,24 +9,24 @@ import requests
 
 app = FastAPI()
 
-# Allow CORS (for frontend connection like WordPress etc.)
+# Allow CORS (for frontend connection like WordPress, etc.)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all for now. You can restrict later if needed.
+    allow_origins=["*"],  # Allow all origins for now. You can restrict later.
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# URL of your uploaded model on Google Drive
-MODEL_URL = "https://drive.google.com/uc?id=1bkFk6nOB5QKYi3iG6jOUDrolxcYDjQWO"
+# URL of your uploaded model on Dropbox
+MODEL_URL = "https://www.dropbox.com/scl/fi/v0b2ja6vzvbsfzx27tuw1/60epochTomatoFruitResnet101v2.keras?rlkey=vaqtvjfk0x2ob847ent9x67in&st=95mllvpj&dl=1"
 
 # Local path to save the model
 MODEL_PATH = "model.keras"
 
-# Download the model from Google Drive if not already downloaded
+# Download the model from Dropbox if not already downloaded
 if not os.path.exists(MODEL_PATH):
-    print("Model not found locally. Downloading...")
+    print("Model not found locally. Downloading from Dropbox...")
     response = requests.get(MODEL_URL)
     if response.status_code == 200:
         with open(MODEL_PATH, "wb") as f:
@@ -34,7 +34,7 @@ if not os.path.exists(MODEL_PATH):
         print("Model downloaded successfully.")
     else:
         print(f"Failed to download model. Status code: {response.status_code}")
-        raise Exception("Could not download model from URL.")
+        raise Exception("Could not download model from Dropbox.")
 
 # Load the model
 model = tf.keras.models.load_model(MODEL_PATH)
